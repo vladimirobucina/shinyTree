@@ -52,7 +52,7 @@ shinyTree <- function(outputId, checkbox=FALSE, search=FALSE,
   searchEl <- shiny::div("")
   if (search == TRUE){
     search <- paste0(outputId, "-search-input")
-    searchEl <- shiny::tags$input(id=search, class="input", type="text", value="")
+    searchEl <- shiny::tags$input(id=search, class="input", type="text", value="", placeholder = "Search the ontology tree...")
   }
   if (is.character(search)){
     # Either the search field we just created or the given text field ID
