@@ -18,9 +18,9 @@ updateTree <- function(session, treeId, data=NULL) {
 }
 
 
-#' @importFrom jsonify toJSON
+#' @importFrom rjson toJSON
 Rlist2json <- function(nestedList) {
-  as.character(jsonify::to_json(get_flatList2(nestedList), auto_unbox = T))
+  as.character(rjson::to_json(get_flatList2(nestedList), auto_unbox = T))
 }
 
 #' @importFrom stringr str_match
