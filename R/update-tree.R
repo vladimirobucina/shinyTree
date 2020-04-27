@@ -18,9 +18,9 @@ updateTree <- function(session, treeId, data=NULL) {
 }
 
 
-#' @importFrom jsonlite toJSON
+#' @importFrom jsonify toJSON
 Rlist2json <- function(nestedList) {
-  as.character(toJSON(get_flatList(nestedList), auto_unbox = T))
+  as.character(jsonify::toJSON(get_flatList2(nestedList), auto_unbox = T))
 }
 
 #' @importFrom stringr str_match
@@ -90,4 +90,37 @@ get_flatList <- function(nestedList, flatList = NULL, parent = "#") {
         Recall(nestedList[[name]], flatList, parent = as.character(length(flatList)))
   }
   flatList
+}
+
+get_flatList2 <- function(nstl, fl = NULL, pr = "#") {
+	for (name in names(nstl)) {
+		nstnm <- nstl[[name]]
+		
+		typ = attr(nstnm,"sttype")
+		ico = attr(nstnm,"sticon")
+		if (is.null(typ)) {
+			adatr <- list("icon" = ico)
+		} else {
+			adatr <- list("icon" = ico,"type" = typ)
+		}
+		
+		len = as.character(length(fl) + 1)
+		nd <- c(list(
+			id = len,
+			text = name,
+			parent = pr,
+			state = list(
+				opened   = isTRUE(attr(nstnm, "stopened")),
+				selected = isTRUE(attr(nstnm, "stselected"))
+			)
+		),
+		adatr
+		)
+		
+		fl = c(fl,list(nd))
+		if (is.list(nstnm)) {
+			fl = Recall(nstnm, fl, pr = len)
+		}
+	}
+	fl
 }
